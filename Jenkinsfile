@@ -21,7 +21,7 @@ steps {
 bat '''
 docker stop cicd-webapp
 docker rm cicd-webapp
-docker run -d -p 8081:80 --name cicd-webapp cicd-webapp
+docker run -d -p 8082:80 --name cicd-webapp cicd-webapp
 '''
 }
 }
