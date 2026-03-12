@@ -6,7 +6,7 @@ stages {
 
 stage('deploy') {
 steps {
-bat 'http://localhost:8081/'
+bat 'https://localhost:8081/'
 }
 }
 }
