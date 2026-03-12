@@ -10,22 +10,10 @@ git 'https://github.com/Aravindh-Cs/examdevops.git'
 }
 }
 
-stage('Build Docker Image') {
+stage('deploy') {
 steps {
-bat 'docker build -t cicd-webapp .'
+bat 'docker run -d -p 8081:80 --name cicd-webapp cicd-webapp'
 }
-}
-
-stage('Run Docker Container') {
-steps {
-bat '''
-docker stop cicd-webapp
-docker rm cicd-webapp
-docker run -d -p 8082:80 --name cicd-webapp cicd-webapp
-'''
-}
-}
-
 }
 
 }
