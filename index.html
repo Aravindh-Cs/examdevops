@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="todobox">
+        <div class="header">
+            <h1>Todo</h1>
+            <form action="" id="addtask">
+                <input type="text" placeholder="Eg:Venkatramana" class="input">
+                <input type="submit" value="Add Task">
+            </form>
+            <div class="option">
+                <p onclick="filtertasks('All')">All</p>
+                <p onclick="filtertasks('Pending')">Pending</p>
+                <p onclick="filtertasks('Completed')">Completed</p>
+                <button class="clr">Clear All</button>
+            </div>
+        </div>
+        <div class="box">
+    </div>
+    </div>
+    <script>
+
+const btn = document.querySelector('#addtask');
+const taskInput = document.querySelector('.input');
+const clear = document.querySelector('.clr');
+let clears = document.querySelector('.clr')
+
+function getTask()
+{
+   const taskString = localStorage.getItem('tasks');
+   return taskString ? JSON.parse(taskString) : [];
+}   
+function setTask(tasks)
+{
+   localStorage.setItem('tasks',JSON.stringify(tasks))
+}
+let tasks = getTask();
+
+function rendertask()
+{
+   const taskArea = document.querySelector('.box');
+   taskArea.innerHTML='';
+   tasks.forEach((task,index)=>
+   {
+      const li = createTaskElement(task,index);
+      taskArea.appendChild(li);
+   }) 
+   setTask(tasks)
+}
+
+function createTaskElement(task,index)
+{
+    const li = document.createElement('li');
+
+    const p = document.createElement('p');
+    p.textContent = task.name;
+    if(task.completed)
+    {
+      p.classList.add ('completed')
+    }
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = task.completed;
+    checkbox.onchange = () =>toggleTask(index)
+
+    const button = document.createElement('button');
+    button.innerHTML = 'Delete';
+    button.classList.add('delete')
+    button.onclick = () =>deleteTask(index)
+
+    li.appendChild(checkbox)
+    li.appendChild(p);
+    li.appendChild(button)
+    return li;
+}
+
+clears.addEventListener('click',()=>
+{
+   tasks=[]
+   rendertask();
+})
+btn.addEventListener('submit',(e)=>
+{
+   e.preventDefault();
+   taskName = taskInput.value.trim();
+   if(taskName !=='')
+   {
+   tasks.push({name:taskName,completed:false})
+   rendertask();
+   taskInput.value = '';
+   }
+
+})
+rendertask();
+function toggleTask(index)
+{
+tasks[index].completed = !tasks[index].completed;
+rendertask();
+}
+function deleteTask(index)
+{
+   tasks.splice(index,1);
+   rendertask();
+}
+
+function filtertasks(filtertype)
+{
+    const taskArea = document.querySelector('.box');
+    taskArea.innerHTML='';
+switch(filtertype)
+{
+   case 'All':
+      tasks.forEach((task,index)=>
+      {
+        const li =createTaskElement(task,index);
+        taskArea.appendChild(li);
+      })
+      break;
+   case 'Pending':
+      filtertask(false);
+      break;
+   case 'Completed':
+      filtertask(true);
+      break; 
+   default:
+      break;    
+}
+}
+
+function filtertask(completed)
+   {
+    tasks.forEach((task,index)=>
+    {
+        if(task.completed === completed)
+        {
+            const li = createTaskElement(task,index);
+            const taskArea = document.querySelector('.box');
+            taskArea.appendChild(li);
+        }
+    })
+      
+   }
+rendertask();
+    </script>
+</body>
+</html> 
