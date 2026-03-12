@@ -6,7 +6,7 @@ stages {
 
 stage('Clone Repository') {
 steps {
-git 'https://github.com/username/cicd-webapp.git'
+git 'https://github.com/Aravindh-Cs/examdevops.git'
 }
 }
 
