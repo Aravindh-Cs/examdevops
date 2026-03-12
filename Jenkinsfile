@@ -12,7 +12,7 @@ git 'https://github.com/Aravindh-Cs/examdevops.git'
 
 stage('deploy') {
 steps {
-bat 'docker run -d -p 8081:80 --name cicd-webapp cicd-webapp'
+bat 'http://localhost:8081/'
 }
 }
 }
